@@ -866,7 +866,7 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
         case UIGestureRecognizerStateFailed:
             [self.keyboardController beginListeningForKeyboard];
             if (self.textViewWasFirstResponderDuringInteractivePop) {
-                [self.inputToolbar.contentView.textView becomeFirstResponder];
+//                [self.inputToolbar.contentView.textView becomeFirstResponder];
             }
 
             if ([UIDevice jsq_isCurrentDeviceBeforeiOS8]) {
