@@ -39,7 +39,7 @@ typedef void (^JSQAnimationCompletionBlock)(BOOL finished);
 
 @property (assign, nonatomic) BOOL jsq_isObserving;
 
-@property (weak, nonatomic) UIView *keyboardView;
+@property (strong, nonatomic) UIView *keyboardView;
 
 - (void)jsq_registerForNotifications;
 - (void)jsq_unregisterForNotifications;
