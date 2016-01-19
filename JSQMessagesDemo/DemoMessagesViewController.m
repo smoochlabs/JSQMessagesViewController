@@ -18,6 +18,7 @@
 
 #import "DemoMessagesViewController.h"
 
+
 @implementation DemoMessagesViewController
 
 #pragma mark - View lifecycle
@@ -43,7 +44,6 @@
     self.senderId = kJSQDemoAvatarIdSquires;
     self.senderDisplayName = kJSQDemoAvatarDisplayNameSquires;
     
-    self.inputToolbar.contentView.textView.pasteDelegate = self;
     
     /**
      *  Load up our fake data for the demo
@@ -73,13 +73,8 @@
      *  Register custom menu actions for cells.
      */
     [JSQMessagesCollectionViewCell registerMenuAction:@selector(customAction:)];
-    [UIMenuController sharedMenuController].menuItems = @[ [[UIMenuItem alloc] initWithTitle:@"Custom Action"
-                                                                                      action:@selector(customAction:)] ];
+    [UIMenuController sharedMenuController].menuItems = @[ [[UIMenuItem alloc] initWithTitle:@"Custom Action" action:@selector(customAction:)] ];
 
-    /**
-     *  OPT-IN: allow cells to be deleted
-     */
-    [JSQMessagesCollectionViewCell registerMenuAction:@selector(delete:)];
 
     /**
      *  Customize your toolbar buttons
@@ -323,8 +318,6 @@
 
 - (void)didPressAccessoryButton:(UIButton *)sender
 {
-    [self.inputToolbar.contentView.textView resignFirstResponder];
-
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Media messages"
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
@@ -337,7 +330,6 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == actionSheet.cancelButtonIndex) {
-        [self.inputToolbar.contentView.textView becomeFirstResponder];
         return;
     }
     
@@ -373,11 +365,6 @@
 - (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView *)collectionView messageDataForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self.demoData.messages objectAtIndex:indexPath.item];
-}
-
-- (void)collectionView:(JSQMessagesCollectionView *)collectionView didDeleteMessageAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.demoData.messages removeObjectAtIndex:indexPath.item];
 }
 
 - (id<JSQMessageBubbleImageDataSource>)collectionView:(JSQMessagesCollectionView *)collectionView messageBubbleImageDataForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -639,25 +626,6 @@
 - (void)collectionView:(JSQMessagesCollectionView *)collectionView didTapCellAtIndexPath:(NSIndexPath *)indexPath touchLocation:(CGPoint)touchLocation
 {
     NSLog(@"Tapped cell at %@!", NSStringFromCGPoint(touchLocation));
-}
-
-#pragma mark - JSQMessagesComposerTextViewPasteDelegate methods
-
-
-- (BOOL)composerTextView:(JSQMessagesComposerTextView *)textView shouldPasteWithSender:(id)sender
-{
-    if ([UIPasteboard generalPasteboard].image) {
-        // If there's an image in the pasteboard, construct a media item with that image and `send` it.
-        JSQPhotoMediaItem *item = [[JSQPhotoMediaItem alloc] initWithImage:[UIPasteboard generalPasteboard].image];
-        JSQMessage *message = [[JSQMessage alloc] initWithSenderId:self.senderId
-                                                 senderDisplayName:self.senderDisplayName
-                                                              date:[NSDate date]
-                                                             media:item];
-        [self.demoData.messages addObject:message];
-        [self finishSendingMessage];
-        return NO;
-    }
-    return YES;
 }
 
 @end

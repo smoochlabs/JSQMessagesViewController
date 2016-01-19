@@ -60,6 +60,7 @@
 
 - (void)testTextMessageInvalidInit
 {
+    XCTAssertThrows([[JSQMessage alloc] init], @"Invalid init should throw");
     XCTAssertThrows([[JSQMessage alloc] initWithSenderId:nil senderDisplayName:nil date:nil text:nil], @"Invalid init should throw");
 }
 

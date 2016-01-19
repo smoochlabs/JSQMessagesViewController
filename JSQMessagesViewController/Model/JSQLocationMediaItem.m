@@ -28,6 +28,10 @@
 
 @property (strong, nonatomic) UIImageView *cachedMapImageView;
 
+- (void)createMapViewSnapshotForLocation:(CLLocation *)location
+                        coordinateRegion:(MKCoordinateRegion)region
+                   withCompletionHandler:(JSQLocationMediaItemCompletionBlock)completion;
+
 @end
 
 
@@ -42,6 +46,13 @@
         [self setLocation:location withCompletionHandler:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    _location = nil;
+    _cachedMapSnapshotImage = nil;
+    _cachedMapImageView = nil;
 }
 
 - (void)clearCachedMediaViews
@@ -109,9 +120,6 @@
                   MKAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:nil reuseIdentifier:nil];
                   CGPoint coordinatePoint = [snapshot pointForCoordinate:location.coordinate];
                   UIImage *image = snapshot.image;
-                  
-                  coordinatePoint.x += pin.centerOffset.x - (CGRectGetWidth(pin.bounds) / 2.0);
-                  coordinatePoint.y += pin.centerOffset.y - (CGRectGetHeight(pin.bounds) / 2.0);
                   
                   UIGraphicsBeginImageContextWithOptions(image.size, YES, image.scale);
                   {

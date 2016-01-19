@@ -43,6 +43,12 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _image = nil;
+    _cachedImageView = nil;
+}
+
 - (void)clearCachedMediaViews
 {
     [super clearCachedMediaViews];
@@ -123,7 +129,7 @@
 
 - (instancetype)copyWithZone:(NSZone *)zone
 {
-    JSQPhotoMediaItem *copy = [[JSQPhotoMediaItem allocWithZone:zone] initWithImage:self.image];
+    JSQPhotoMediaItem *copy = [[[self class] allocWithZone:zone] initWithImage:self.image];
     copy.appliesMediaViewMaskAsOutgoing = self.appliesMediaViewMaskAsOutgoing;
     return copy;
 }
