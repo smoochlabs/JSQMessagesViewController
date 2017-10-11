@@ -145,7 +145,7 @@
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-    if (!self.pasteDelegate || ![self.pasteDelegate composerTextView:self canPerformAction:action withSender:sender]) {
+    if (!self.pasterDelegate || ![self.pasterDelegate composerTextView:self canPerformAction:action withSender:sender]) {
         return [super canPerformAction:action withSender:sender];
     }
     return YES;
@@ -153,7 +153,7 @@
 
 - (void)paste:(id)sender
 {
-    if (!self.pasteDelegate || [self.pasteDelegate composerTextView:self shouldPasteWithSender:sender]) {
+    if (!self.pasterDelegate || [self.pasterDelegate composerTextView:self shouldPasteWithSender:sender]) {
         [super paste:sender];
     }
 }

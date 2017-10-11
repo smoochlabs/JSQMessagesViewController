@@ -43,7 +43,7 @@
     self.senderId = kJSQDemoAvatarIdSquires;
     self.senderDisplayName = kJSQDemoAvatarDisplayNameSquires;
     
-    self.inputToolbar.contentView.textView.pasteDelegate = self;
+    self.inputToolbar.contentView.textView.pasterDelegate = self;
     
     /**
      *  Load up our fake data for the demo
