@@ -74,10 +74,18 @@
     NSParameterAssert(view != nil);
     NSParameterAssert(image != nil);
     
-    UIImageView *imageViewMask = [[UIImageView alloc] initWithImage:image];
-    imageViewMask.frame = CGRectInset(view.frame, 2.0f, 2.0f);
+    CALayer* layer = [[CALayer alloc] init];
+    layer.frame = CGRectInset(view.frame, 2.0f, 2.0f);
     
-    view.layer.mask = imageViewMask.layer;
+    [layer setContents:(__bridge id)image.CGImage];
+    [layer setContentsScale:image.scale];
+    
+    [layer setContentsCenter:CGRectMake(((image.size.width/2) - 1)/image.size.width,
+                                        ((image.size.height/2) - 1)/image.size.height,
+                                        1 / image.size.width,
+                                        1 / image.size.height)];
+    
+    view.layer.mask = layer;
 }
 
 @end
